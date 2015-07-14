@@ -1,0 +1,45 @@
+<html ng-app="exampleApp">
+<head>
+	<title>One way binding for isolated scope</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<script type="text/ng-template" id="scopeTemplate">
+		<div class="panel-body">
+			<p>Data Value: {{local}}</p>
+		</div>
+	</script>
+	<script>
+		angular.module("exampleApp", []) 
+			.directive("scopeDemo", function() {
+				return {
+				    template: function() {
+				    	return angular.element(document.querySelector("#scopeTemplate")).html();
+				    },
+				    scope: {
+				    	local: "@nameprop"
+				    }
+				}	
+			})
+			
+			.controller("scopeCtrl", function ($scope) {
+				$scope.data = { name: "Ted" };
+			})
+	</script>
+</head>
+<body>
+	<div ng-controller="scopeCtrl", class="panel panel-default">
+		<p>One way binding for isolated scope</p>
+		<div class="panel-body">
+			Direct Binding: <input ng-model="data.name" />
+		</div>
+		<div class="panel-body" scope-demo nameprop="{{data.name}}"></div> <!-- explicitly state we want to controller scope to local directive scope --> 
+		<div class="panel-body" scope-demo nameprop="{{data.name + ' Freeman'}}"></div>
+	</div>
+</body>
+</html>

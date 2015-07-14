@@ -1,0 +1,60 @@
+<html ng-app="exampleApp">
+<head>
+	<title>Directives_1</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<!--
+	<scriot type="text/template" id="listTemplate">
+		<ul>
+			<li ng-repeat="item in data">{{item.price | currency}}</li>
+		</ul>
+	</scriot> -->
+	<script>
+		angular.module("exampleApp", []) 
+			.directive("unorderedList", function() {
+				return {
+				    link: function (scope, element, attrs) { // Link function
+						scope.data = scope[attrs["unorderedList"]];
+					},
+					restrict: "A",
+					templateUrl: "templates/tableTemplate.html",
+					replace: true // Explicitly state to replace the div element below with templte elements. 
+				}	
+			})
+			
+			.controller("defaultCtrl", function ($scope) {
+				$scope.products = [
+					{ name: "Apples", category: "Fruit", price: 1.20, expiry: 10 },
+					{ name: "Bananas", category: "Fruit", price: 2.42, expiry: 7 },
+					{ name: "Pears", category: "Fruit", price: 2.02, expiry: 6 },
+				];
+
+				$scope.incrementPrices = function() {
+					for (var i = 0; i < $scope.products.length; i++) {
+						$scope.products[i].price++; 
+					}
+				}
+			})
+
+	</script>
+</head>
+<body ng-controller="defaultCtrl">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3>Products</h3>
+		</div>		
+		<div class="panel-body">
+			<!-- <div unordered-list="products" class="table table-striped" ng-repeat="count in [1,2,3]"> -->
+			<div unordered-list="products" class="table table-striped">	
+				This is where the list will go
+			</div>
+		</div>
+	</div>
+</body>
+</html>

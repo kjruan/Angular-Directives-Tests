@@ -1,0 +1,41 @@
+<html ng-app="exampleApp">
+<head>
+	<title>Directives_1</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<!--
+	<scriot type="text/template" id="listTemplate">
+		<ul>
+			<li ng-repeat="item in data">{{item.price | currency}}</li>
+		</ul>
+	</scriot> -->
+	<script>
+		angular.module("exampleApp", []) 
+			.directive("scopeDemo", function() {
+				return {
+				    template: 
+				    	"<div class='panel-body'>Name: <input ng-model=name /></div>",
+				    scope: true
+				}
+			})
+			
+			.controller("scopeCtrl", function ($scope) {
+				// do nothing
+			})
+
+	</script>
+</head>
+<body>
+	<div ng-controller="scopeCtrl", class="panel panel-default">
+		<p>Same scope for scope-demo directives</p>
+		<div class="panel-body" scope-demo></div> <!-- Two directives updating own scope -->
+		<div class="panel-body" scope-demo></div> <!-- Two directives updating the scope -->
+	</div>
+</body>
+</html>

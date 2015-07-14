@@ -1,0 +1,66 @@
+<html ng-app="exampleApp">
+<head>
+	<title>Directives_1</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<script>
+		angular.module("exampleApp", []) 
+			.directive("unorderedList", function() {
+				return {
+				    link: function (scope, element, attrs) { // Link function
+						var data = scope[attrs["unorderedList"] || attrs["listSource"]]; // Get from attrs then pass the result to scope
+						var propertyExpression = attrs["listProperty"]; // Get property of the data to to work with the directive
+						if (angular.isArray(data)) {
+							// user jqlite to append data to elements
+							var listElem = angular.element("<ul>"); // create <ul> elements
+							if (element[0].nodeName == "#comment") {
+								element.parent().append(listElem);
+							}else {
+								element.append(listElem); // add the <ul> element to the element of the linked function 
+							}
+							for (var i = 0; i < data.length; i++) {
+								var itemElement = angular.element('<li>').text(scope.$eval(propertyExpression, data[i]));
+								listElem.append(itemElement);
+							}
+						}	
+					},
+					restrict: "EACH"
+				}	
+			})
+			
+			.controller("defaultCtrl", function ($scope) {
+				$scope.products = [
+					{ name: "Apples", category: "Fruit", price: 1.20, expiry: 10 },
+					{ name: "Bananas", category: "Fruit", price: 2.42, expiry: 7 },
+					{ name: "Pears", category: "Fruit", price: 2.02, expiry: 6 },
+				];
+
+				$scope.incrementPrices = function() {
+					for (var i = 0; i < $scope.products.length; i++) {
+						$scope.products[i].price++; 
+					}
+				}
+			})
+
+	</script>
+</head>
+<body ng-controller="defaultCtrl">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3>Products</h3>
+		</div>
+		<div class="panel-body">
+			<unordered-list list-source="products" list-property="price | currency"/>
+		</div>
+		<div class="panel-body">
+			<div unordered-list="products" list-property="price | currency"/>
+		</div>
+	</div>
+</body>
+</html>
